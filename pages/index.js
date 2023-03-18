@@ -1,20 +1,32 @@
-import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
+import Head from 'next/head';
+import PlayersTable from '/components/PlayersTable';
 
-export default function Home() {
+import { getSortedPlayersData } from '/lib/players';
+
+export async function getStaticProps() {
+  const players = getSortedPlayersData();
+  return {
+    props: {
+      players,
+    },
+  };
+}
+
+export default function Home({players}) {
   return (
-    <Layout home>
+    <>
       <Head>
-        <title>{siteTitle}</title>
+        <title>Live Ratings</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className={utilStyles.headingMd}>
-        <p>[Your Self Introduction]</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this in{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-      </section>
-    </Layout>
-  )
+      <main>
+        <h1 className="text-3xl font-bold text-gray-900 text-center p-5">Live Ratings</h1>
+        <div className="md:container md:mx-auto">
+          <PlayersTable players={players}/>
+        </div>
+      </main>
+    </>
+  );
 }
